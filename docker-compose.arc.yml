@@ -1,0 +1,15 @@
+
+services:
+  ml_api:
+    build:
+      context: ml_api
+      dockerfile: Dockerfile.arc
+
+    environment:
+      OPENVINO_DEVICE: '${OPENVINO_DEVICE-GPU}'
+
+    devices:
+      - /dev/dri:/dev/dri
+
+    group_add:
+      - '${RENDER_GID}'

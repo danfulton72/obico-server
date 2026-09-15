@@ -11,8 +11,29 @@ class OnnxNet:
     meta: Meta
 
     def __init__(self, onnx_path: str, meta_path: str, use_gpu: bool):
-        providers = ['CUDAExecutionProvider'] if use_gpu else ['CPUExecutionProvider']
-        self.session = onnxruntime.InferenceSession(onnx_path, providers=providers)
+        if use_gpu:
+            device = os.environ.get('OPENVINO_DEVICE', 'GPU')
+            providers = [
+                (
+                    'OpenVINOExecutionProvider',
+                    {
+                        'device_type': device,
+                    },
+                ),
+                'CPUExecutionProvider',
+            ]
+        else:
+            providers = ['CPUExecutionProvider']
+
+        print(f'ONNX Runtime available providers: {onnxruntime.get_available_providers()}')
+        print(f'ONNX Runtime requested providers: {providers}')
+
+        self.session = onnxruntime.InferenceSession(
+            onnx_path,
+            providers=providers,
+        )
+
+        print(f'ONNX Runtime active providers: {self.session.get_providers()}')
         self.meta = Meta(meta_path)
 
     def detect(self, meta, image, alt_names, thresh=.5, hier_thresh=.5, nms=.45, debug=False) -> List[Tuple[str, float, Tuple[float, float, float, float]]]:

@@ -7,12 +7,9 @@ from os import path
 
 alt_names = None
 
-darknet_ready = True
-try:
-    from lib.darknet import YoloNet
-except Exception as e:
-    print(f'Error during importing YoloNet! - {e}')
-    darknet_ready = False
+# Darknet is intentionally disabled in the Intel Arc/OpenVINO build.
+darknet_ready = False
+YoloNet = None
 
 onnx_ready = True
 try:
@@ -68,11 +65,8 @@ def load_net(config_path, meta_path, weights_path=None):
 
     model_dir = path.join(path.dirname(path.realpath(__file__)), '..', 'model')
     net_config_priority = [
-            dict(weights_path='/model_cache/ml_api/darknet/model-weights.darknet', use_gpu=True),
-            dict(weights_path='/model_cache/ml_api/darknet/model-weights.darknet', use_gpu=False),
             dict(weights_path='/model_cache/ml_api/onnx/model-weights.onnx', use_gpu=True),
             dict(weights_path='/model_cache/ml_api/onnx/model-weights.onnx', use_gpu=False),
-            dict(weights_path='/model_cache/ml_api/rknn/model-weights.rknn', use_gpu=False),
         ]
     if weights_path is not None:
         net_config_priority = [ dict(weights_path=weights_path, use_gpu=True), dict(weights_path=weights_path, use_gpu=False) ]
