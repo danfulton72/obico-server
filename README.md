@@ -8,6 +8,8 @@ The AI failure detection in this project is based on a Deep Learning model. [See
 
 > **Note:** If you are looking for information about setting up self-hosted server for [JusPrin](https://github.com/TheSpaghettiDetective/JusPrin), please see [README_jusprin_server.md](README_jusprin_server.md) for specific instructions.
 
+> **Intel Arc GPU support (fork-specific):** This branch includes OpenVINO acceleration for Intel Arc GPUs such as the Arc A310. See [INTEL_ARC.md](INTEL_ARC.md) for setup, the Docker Compose override, verification steps, troubleshooting, and update notes.
+
 # Install and run the server
 
 > **Note:** For more detailed instructions, head to [the Obico Server guide](https://www.obico.io/docs/server-guides/).*
